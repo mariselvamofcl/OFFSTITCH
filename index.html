@@ -1,0 +1,2056 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>OFFSTITCH — Beyond The Stitch</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+    font-family:Arial, Helvetica, sans-serif;
+    background:#f8f5f2;
+    color:#111;
+    overflow-x:hidden;
+}
+
+/* =========================
+   ANIMATED BACKGROUND
+========================= */
+
+body::before{
+    content:"";
+    position:fixed;
+    width:900px;
+    height:500px;
+    left:-250px;
+    top:35%;
+    background:rgba(116,22,35,.10);
+    filter:blur(80px);
+    border-radius:50%;
+    animation:backgroundWave 10s ease-in-out infinite alternate;
+    z-index:-2;
+}
+
+body::after{
+    content:"";
+    position:fixed;
+    width:900px;
+    height:500px;
+    right:-300px;
+    bottom:5%;
+    background:rgba(116,22,35,.08);
+    filter:blur(90px);
+    border-radius:50%;
+    animation:backgroundWave2 12s ease-in-out infinite alternate;
+    z-index:-2;
+}
+
+@keyframes backgroundWave{
+    0%{
+        transform:translate(0,0) rotate(-10deg) scale(1);
+    }
+    50%{
+        transform:translate(300px,100px) rotate(15deg) scale(1.15);
+    }
+    100%{
+        transform:translate(650px,-80px) rotate(-8deg) scale(.95);
+    }
+}
+
+@keyframes backgroundWave2{
+    0%{
+        transform:translate(0,0) rotate(10deg) scale(1);
+    }
+    50%{
+        transform:translate(-300px,-120px) rotate(-15deg) scale(1.2);
+    }
+    100%{
+        transform:translate(-600px,50px) rotate(8deg) scale(.9);
+    }
+}
+
+/* =========================
+   HEADER
+========================= */
+
+header{
+    position:sticky;
+    top:0;
+    z-index:1000;
+    height:76px;
+    background:rgba(248,245,242,.94);
+    backdrop-filter:blur(15px);
+    border-bottom:1px solid rgba(0,0,0,.08);
+}
+
+.nav{
+    max-width:1180px;
+    height:100%;
+    margin:auto;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 25px;
+}
+
+.logo{
+    font-size:25px;
+    font-weight:900;
+    letter-spacing:6px;
+}
+
+.logo small{
+    display:block;
+    font-size:7px;
+    letter-spacing:4px;
+    margin-top:3px;
+    color:#741623;
+}
+
+.nav-links{
+    display:flex;
+    gap:25px;
+}
+
+.nav-links a{
+    text-decoration:none;
+    color:#111;
+    font-size:13px;
+    font-weight:700;
+    transition:.3s;
+}
+
+.nav-links a:hover{
+    color:#741623;
+}
+
+.nav-actions{
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+.cart-btn,
+.menu-btn{
+    border:1px solid #111;
+    background:transparent;
+    height:42px;
+    padding:0 14px;
+    cursor:pointer;
+    transition:.3s;
+}
+
+.cart-btn:hover,
+.menu-btn:hover{
+    background:#741623;
+    color:white;
+}
+
+.menu-btn{
+    display:none;
+    font-size:20px;
+}
+
+.cart-count{
+    background:#741623;
+    color:white;
+    min-width:20px;
+    height:20px;
+    border-radius:50%;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    font-size:11px;
+    margin-left:4px;
+}
+
+/* =========================
+   HERO
+========================= */
+
+.hero{
+    width:100%;
+    height:min(720px,calc(100vh - 76px));
+    min-height:540px;
+    position:relative;
+    overflow:hidden;
+}
+
+.hero-img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    object-position:center center;
+    display:block;
+    filter:brightness(.72);
+    transform:scale(1.01);
+}
+
+.hero-overlay{
+    position:absolute;
+    inset:0;
+    background:
+        linear-gradient(
+            90deg,
+            rgba(0,0,0,.65),
+            rgba(0,0,0,.20),
+            rgba(0,0,0,.05)
+        );
+}
+
+.hero-content{
+    position:absolute;
+    left:50%;
+    top:50%;
+    transform:translate(-50%,-50%);
+    width:min(1100px,90%);
+    color:white;
+}
+
+.hero-tag{
+    color:#dba5ad;
+    font-size:11px;
+    letter-spacing:5px;
+    font-weight:800;
+    margin-bottom:20px;
+}
+
+.hero h1{
+    font-size:clamp(55px,8vw,120px);
+    line-height:.86;
+    letter-spacing:-5px;
+    max-width:800px;
+    font-weight:900;
+}
+
+.hero p{
+    max-width:600px;
+    font-size:17px;
+    line-height:1.6;
+    margin:30px 0;
+}
+
+.hero-buttons{
+    display:flex;
+    gap:12px;
+    flex-wrap:wrap;
+}
+
+.hero-buttons a{
+    text-decoration:none;
+    color:white;
+    border:1px solid white;
+    padding:15px 25px;
+    font-size:12px;
+    font-weight:800;
+    letter-spacing:1px;
+    transition:.3s;
+}
+
+.hero-buttons a:first-child{
+    background:#741623;
+    border-color:#741623;
+}
+
+.hero-buttons a:hover{
+    background:white;
+    color:#111;
+}
+
+/* =========================
+   SECTION
+========================= */
+
+.section{
+    max-width:1180px;
+    margin:auto;
+    padding:100px 25px;
+    position:relative;
+}
+
+.section-label{
+    color:#741623;
+    letter-spacing:4px;
+    font-size:10px;
+    font-weight:800;
+    margin-bottom:15px;
+}
+
+.section-title{
+    font-size:36px;
+    margin-bottom:8px;
+}
+
+.section-subtitle{
+    color:#444;
+    margin-bottom:30px;
+}
+
+/* =========================
+   CATEGORY CARDS
+========================= */
+
+.category-grid{
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:22px;
+    max-width:850px;
+    margin:40px auto 0;
+}
+
+.category-card{
+    height:390px;
+    position:relative;
+    overflow:hidden;
+    border-radius:22px;
+    cursor:pointer;
+    background:#222;
+    box-shadow:0 15px 40px rgba(0,0,0,.10);
+    transition:
+        transform .5s cubic-bezier(.2,.8,.2,1),
+        box-shadow .5s ease;
+}
+
+.category-card:hover{
+    transform:translateY(-10px) scale(1.015);
+    box-shadow:0 25px 60px rgba(0,0,0,.20);
+}
+
+.category-card:active{
+    transform:scale(.97);
+}
+
+.category-card img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    transition:transform .8s cubic-bezier(.2,.8,.2,1);
+}
+
+.category-card:hover img{
+    transform:scale(1.07);
+}
+
+.category-overlay{
+    position:absolute;
+    inset:0;
+    display:flex;
+    flex-direction:column;
+    justify-content:flex-end;
+    padding:25px;
+    color:white;
+    background:linear-gradient(
+        transparent 35%,
+        rgba(0,0,0,.75)
+    );
+}
+
+.category-number{
+    font-size:11px;
+    font-weight:800;
+    letter-spacing:2px;
+}
+
+.category-name{
+    font-size:29px;
+    font-weight:900;
+    margin:8px 0;
+}
+
+.category-description{
+    font-size:13px;
+    opacity:.9;
+    margin-bottom:12px;
+}
+
+.explore-btn{
+    display:inline-block;
+    width:max-content;
+    background:white;
+    color:#111;
+    padding:9px 13px;
+    font-size:11px;
+    font-weight:800;
+}
+
+/* =========================
+   NEW ARRIVALS
+========================= */
+
+.arrivals{
+    background:rgba(255,255,255,.28);
+}
+
+.filter-row{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+    margin-bottom:30px;
+}
+
+.filter-btn{
+    padding:12px 20px;
+    border-radius:30px;
+    border:1px solid #ccc;
+    background:transparent;
+    font-weight:800;
+    font-size:12px;
+    cursor:pointer;
+    transition:.3s;
+}
+
+.filter-btn:hover,
+.filter-btn.active{
+    background:#111;
+    color:white;
+    border-color:#111;
+}
+
+.products-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:20px;
+}
+
+.product-card{
+    background:white;
+    border-radius:16px;
+    overflow:hidden;
+    cursor:pointer;
+    box-shadow:0 10px 30px rgba(0,0,0,.07);
+    opacity:0;
+    transform:translateY(45px);
+    transition:
+        opacity .8s ease,
+        transform .8s cubic-bezier(.2,.8,.2,1),
+        box-shadow .4s ease;
+}
+
+.product-card.visible{
+    opacity:1;
+    transform:translateY(0);
+}
+
+.product-card:hover{
+    transform:translateY(-8px) scale(1.015);
+    box-shadow:0 20px 45px rgba(0,0,0,.15);
+}
+
+.product-card:active{
+    transform:scale(.96);
+}
+
+.product-img-wrap{
+    height:335px;
+    overflow:hidden;
+    background:#ddd;
+}
+
+.product-card img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    display:block;
+    transition:transform .7s ease;
+}
+
+.product-card:hover img{
+    transform:scale(1.06);
+}
+
+.product-info{
+    padding:20px 18px;
+}
+
+.product-category{
+    font-size:9px;
+    letter-spacing:3px;
+    color:#777;
+    font-weight:800;
+}
+
+.product-name{
+    font-size:18px;
+    font-weight:800;
+    margin:8px 0 5px;
+}
+
+.product-hint{
+    font-size:13px;
+    color:#555;
+}
+
+/* =========================
+   SCROLL REVEAL
+========================= */
+
+.reveal{
+    opacity:0;
+    transform:translateY(50px);
+    transition:
+        opacity .9s ease,
+        transform .9s cubic-bezier(.2,.8,.2,1);
+}
+
+.reveal.show{
+    opacity:1;
+    transform:translateY(0);
+}
+
+/* =========================
+   FOOTER
+========================= */
+
+footer{
+    background:#121212;
+    color:white;
+    padding:80px 25px 40px;
+}
+
+.footer-inner{
+    max-width:1180px;
+    margin:auto;
+    display:grid;
+    grid-template-columns:2fr 1fr 1fr 1fr;
+    gap:50px;
+}
+
+.footer-logo{
+    font-size:32px;
+    font-weight:900;
+    letter-spacing:5px;
+}
+
+.footer-text{
+    color:#aaa;
+    margin-top:15px;
+    max-width:330px;
+    line-height:1.7;
+    font-size:13px;
+}
+
+.footer-col h4{
+    font-size:11px;
+    letter-spacing:3px;
+    margin-bottom:18px;
+}
+
+.footer-col a{
+    display:block;
+    text-decoration:none;
+    color:#aaa;
+    margin-bottom:10px;
+    font-size:13px;
+}
+
+.footer-col a:hover{
+    color:white;
+}
+
+.copyright{
+    max-width:1180px;
+    margin:60px auto 0;
+    padding-top:20px;
+    border-top:1px solid #333;
+    color:#777;
+    font-size:11px;
+}
+
+/* =========================
+   CART DRAWER
+========================= */
+
+.cart-overlay{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.45);
+    opacity:0;
+    pointer-events:none;
+    transition:.3s;
+    z-index:1998;
+}
+
+.cart-overlay.open{
+    opacity:1;
+    pointer-events:auto;
+}
+
+.cart-drawer{
+    position:fixed;
+    right:-420px;
+    top:0;
+    width:min(420px,100%);
+    height:100vh;
+    background:#fff;
+    z-index:1999;
+    transition:right .4s cubic-bezier(.2,.8,.2,1);
+    display:flex;
+    flex-direction:column;
+}
+
+.cart-drawer.open{
+    right:0;
+}
+
+.cart-header{
+    height:75px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:0 22px;
+    border-bottom:1px solid #ddd;
+}
+
+.cart-header h2{
+    font-size:20px;
+}
+
+.close-cart{
+    border:0;
+    background:transparent;
+    font-size:25px;
+    cursor:pointer;
+}
+
+.cart-items{
+    flex:1;
+    overflow:auto;
+    padding:20px;
+}
+
+.empty-cart{
+    text-align:center;
+    color:#777;
+    padding:60px 10px;
+}
+
+.cart-item{
+    display:flex;
+    gap:14px;
+    padding:14px 0;
+    border-bottom:1px solid #eee;
+}
+
+.cart-item img{
+    width:75px;
+    height:90px;
+    object-fit:cover;
+    border-radius:8px;
+}
+
+.cart-item-info{
+    flex:1;
+}
+
+.cart-item-info h4{
+    margin-bottom:7px;
+}
+
+.cart-item-info p{
+    font-size:13px;
+    color:#777;
+}
+
+.remove-item{
+    margin-top:10px;
+    border:0;
+    background:none;
+    color:#741623;
+    cursor:pointer;
+    font-size:11px;
+}
+
+.cart-footer{
+    padding:20px;
+    border-top:1px solid #ddd;
+}
+
+.checkout-btn{
+    width:100%;
+    border:0;
+    background:#741623;
+    color:white;
+    padding:16px;
+    font-weight:800;
+    cursor:pointer;
+}
+
+.checkout-btn:hover{
+    background:#111;
+}
+
+/* =========================
+   MOBILE MENU
+========================= */
+
+.mobile-menu{
+    position:fixed;
+    top:76px;
+    right:15px;
+    width:230px;
+    background:white;
+    box-shadow:0 15px 40px rgba(0,0,0,.18);
+    border-radius:14px;
+    padding:15px;
+    z-index:1500;
+    opacity:0;
+    transform:translateY(-15px);
+    pointer-events:none;
+    transition:.3s;
+}
+
+.mobile-menu.open{
+    opacity:1;
+    transform:translateY(0);
+    pointer-events:auto;
+}
+
+.mobile-menu a{
+    display:block;
+    text-decoration:none;
+    color:#111;
+    padding:14px;
+    border-bottom:1px solid #eee;
+    font-weight:700;
+}
+
+.mobile-menu a:last-child{
+    border-bottom:0;
+}
+
+/* =========================
+   TABLET
+========================= */
+
+@media(max-width:1000px){
+
+    .products-grid{
+        grid-template-columns:repeat(3,1fr);
+    }
+
+    .hero{
+        height:620px;
+    }
+
+    .category-grid{
+        max-width:720px;
+    }
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media(max-width:700px){
+
+    header{
+        height:68px;
+    }
+
+    .nav{
+        padding:0 16px;
+    }
+
+    .logo{
+        font-size:20px;
+        letter-spacing:4px;
+    }
+
+    .logo small{
+        display:none;
+    }
+
+    .nav-links{
+        display:none;
+    }
+
+    .menu-btn{
+        display:block;
+    }
+
+    .cart-btn{
+        height:38px;
+        padding:0 10px;
+    }
+
+    .hero{
+        height:520px;
+        min-height:0;
+    }
+
+    .hero-img{
+        object-position:center;
+    }
+
+    .hero-content{
+        width:calc(100% - 35px);
+        left:18px;
+        transform:translateY(-50%);
+    }
+
+    .hero h1{
+        font-size:clamp(48px,15vw,70px);
+        letter-spacing:-3px;
+    }
+
+    .hero p{
+        font-size:14px;
+        max-width:390px;
+        margin:20px 0;
+    }
+
+    .hero-buttons a{
+        padding:13px 17px;
+        font-size:10px;
+    }
+
+    .section{
+        padding:65px 16px;
+    }
+
+    .section-title{
+        font-size:29px;
+    }
+
+    .category-grid{
+        grid-template-columns:1fr;
+        max-width:430px;
+        gap:16px;
+        margin-top:25px;
+    }
+
+    .category-card{
+        height:330px;
+    }
+
+    .products-grid{
+        grid-template-columns:repeat(2,1fr);
+        gap:12px;
+    }
+
+    .product-img-wrap{
+        height:250px;
+    }
+
+    .product-info{
+        padding:15px 12px;
+    }
+
+    .product-name{
+        font-size:15px;
+    }
+
+    .product-hint{
+        font-size:11px;
+    }
+
+    .filter-row{
+        gap:7px;
+        overflow-x:auto;
+        flex-wrap:nowrap;
+        padding-bottom:5px;
+    }
+
+    .filter-btn{
+        flex-shrink:0;
+        padding:10px 15px;
+    }
+
+    .footer-inner{
+        grid-template-columns:1fr 1fr;
+        gap:35px;
+    }
+
+    .footer-brand{
+        grid-column:1/-1;
+    }
+}
+
+/* =========================
+   SMALL PHONE
+========================= */
+
+@media(max-width:420px){
+
+    .hero{
+        height:470px;
+    }
+
+    .hero h1{
+        font-size:46px;
+    }
+
+    .hero p{
+        font-size:13px;
+    }
+
+    .category-card{
+        height:300px;
+    }
+
+    .category-name{
+        font-size:25px;
+    }
+
+    .products-grid{
+        grid-template-columns:1fr;
+    }
+
+    .product-img-wrap{
+        height:330px;
+    }
+
+    .footer-inner{
+        grid-template-columns:1fr;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- =========================
+     HEADER
+========================= -->
+
+<header>
+
+<div class="nav">
+
+    <a href="#home" style="text-decoration:none;color:#111;">
+        <div class="logo">
+            OFFSTITCH
+            <small>BEYOND THE STITCH</small>
+        </div>
+    </a>
+
+    <nav class="nav-links">
+        <a href="#home">HOME</a>
+        <a href="#categories">CATEGORIES</a>
+        <a href="#arrivals">NEW ARRIVALS</a>
+        <a href="#footer">AI STYLE</a>
+    </nav>
+
+    <div class="nav-actions">
+
+        <button class="menu-btn" id="menuBtn">
+            ☰
+        </button>
+
+        <button class="cart-btn" id="cartBtn">
+            🛍
+            <span class="cart-count" id="cartCount">0</span>
+        </button>
+
+    </div>
+
+</div>
+
+</header>
+
+
+<!-- =========================
+     MOBILE MENU
+========================= -->
+
+<div class="mobile-menu" id="mobileMenu">
+    <a href="#home">HOME</a>
+    <a href="#categories">CATEGORIES</a>
+    <a href="#arrivals">NEW ARRIVALS</a>
+    <a href="#arrivals">MEN</a>
+    <a href="#arrivals">WOMEN</a>
+    <a href="#arrivals">UNISEX</a>
+    <a href="#arrivals">ACCESSORIES</a>
+</div>
+
+
+<!-- =========================
+     HERO
+========================= -->
+
+<section class="hero" id="home">
+
+    <img
+        class="hero-img"
+        src="images/hero.jpg"
+        alt="OFFSTITCH collection"
+        onerror="this.src='https://images.unsplash.com/photo-1529139574466-a303027c1d8b?auto=format&fit=crop&w=1800&q=85';"
+    >
+
+    <div class="hero-overlay"></div>
+
+    <div class="hero-content">
+
+        <div class="hero-tag">
+            OFFSTITCH
+        </div>
+
+        <h1>
+            BEYOND<br>
+            THE STITCH
+        </h1>
+
+        <p>
+            Fashion that moves with you.
+            Discover modern silhouettes,
+            effortless streetwear and everyday essentials.
+        </p>
+
+        <div class="hero-buttons">
+
+            <a href="#arrivals">
+                SHOP NEW ARRIVALS
+            </a>
+
+            <a href="#categories">
+                EXPLORE CATEGORIES
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     CATEGORIES
+========================= -->
+
+<section class="section" id="categories">
+
+    <div class="reveal">
+
+        <div class="section-label">
+            DISCOVER
+        </div>
+
+        <h2 class="section-title">
+            SHOP BY CATEGORY
+        </h2>
+
+        <p class="section-subtitle">
+            Find your style. Define your look.
+        </p>
+
+    </div>
+
+
+    <div class="category-grid">
+
+        <!-- MEN -->
+
+        <div class="category-card reveal"
+             onclick="scrollToArrivals('MEN')">
+
+            <img
+                src="images/men.jpg"
+                alt="Men"
+                onerror="this.src='https://images.unsplash.com/photo-1617127365659-c47fa864d8bc?auto=format&fit=crop&w=900&q=85';"
+            >
+
+            <div class="category-overlay">
+
+                <span class="category-number">
+                    01
+                </span>
+
+                <div class="category-name">
+                    MEN
+                </div>
+
+                <div class="category-description">
+                    Modern everyday essentials
+                </div>
+
+                <span class="explore-btn">
+                    EXPLORE
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <!-- WOMEN -->
+
+        <div class="category-card reveal"
+             onclick="scrollToArrivals('WOMEN')">
+
+            <img
+                src="images/women.jpg"
+                alt="Women"
+                onerror="this.src='https://images.unsplash.com/photo-1539109136881-3be0616acf4b?auto=format&fit=crop&w=900&q=85';"
+            >
+
+            <div class="category-overlay">
+
+                <span class="category-number">
+                    02
+                </span>
+
+                <div class="category-name">
+                    WOMEN
+                </div>
+
+                <div class="category-description">
+                    Contemporary everyday style
+                </div>
+
+                <span class="explore-btn">
+                    EXPLORE
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <!-- UNISEX -->
+
+        <div class="category-card reveal"
+             onclick="scrollToArrivals('UNISEX')">
+
+            <img
+                src="images/unisex.jpg"
+                alt="Unisex"
+                onerror="this.src='https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=900&q=85';"
+            >
+
+            <div class="category-overlay">
+
+                <span class="category-number">
+                    03
+                </span>
+
+                <div class="category-name">
+                    UNISEX
+                </div>
+
+                <div class="category-description">
+                    Styles made for everyone
+                </div>
+
+                <span class="explore-btn">
+                    EXPLORE
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <!-- ACCESSORIES -->
+
+        <div class="category-card reveal"
+             onclick="scrollToArrivals('ACCESSORIES')">
+
+            <img
+                src="images/accessories.jpg"
+                alt="Accessories"
+                onerror="this.src='https://images.unsplash.com/photo-1523779917675-b6ed3a42a561?auto=format&fit=crop&w=900&q=85';"
+            >
+
+            <div class="category-overlay">
+
+                <span class="category-number">
+                    04
+                </span>
+
+                <div class="category-name">
+                    ACCESSORIES
+                </div>
+
+                <div class="category-description">
+                    Complete the look
+                </div>
+
+                <span class="explore-btn">
+                    EXPLORE
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     NEW ARRIVALS
+========================= -->
+
+<section class="section arrivals" id="arrivals">
+
+    <div class="reveal">
+
+        <div class="section-label">
+            LATEST DROP
+        </div>
+
+        <h2 class="section-title">
+            NEW ARRIVALS
+        </h2>
+
+        <p class="section-subtitle">
+            Fresh pieces. New energy.
+        </p>
+
+    </div>
+
+
+    <div class="filter-row reveal">
+
+        <button class="filter-btn active" data-filter="ALL">
+            ALL
+        </button>
+
+        <button class="filter-btn" data-filter="MEN">
+            MEN
+        </button>
+
+        <button class="filter-btn" data-filter="WOMEN">
+            WOMEN
+        </button>
+
+        <button class="filter-btn" data-filter="UNISEX">
+            UNISEX
+        </button>
+
+        <button class="filter-btn" data-filter="ACCESSORIES">
+            ACCESSORIES
+        </button>
+
+    </div>
+
+
+    <div class="products-grid" id="productsGrid">
+
+        <!-- PRODUCT 1 -->
+
+        <div class="product-card"
+             data-category="WOMEN"
+             data-name="Modern Dress"
+             data-price="89"
+             data-image="images/dress.jpg">
+
+            <div class="product-img-wrap">
+
+                <img
+                    src="images/dress.jpg"
+                    alt="Modern Dress"
+                    onerror="this.src='https://images.unsplash.com/photo-1595777457583-95e059d581b8?auto=format&fit=crop&w=900&q=85';"
+                >
+
+            </div>
+
+            <div class="product-info">
+
+                <div class="product-category">
+                    WOMEN
+                </div>
+
+                <div class="product-name">
+                    Modern Dress
+                </div>
+
+                <div class="product-hint">
+                    Tap to add
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- PRODUCT 2 -->
+
+        <div class="product-card"
+             data-category="UNISEX"
+             data-name="Street Hoodie"
+             data-price="79"
+             data-image="images/hoodie.jpg">
+
+            <div class="product-img-wrap">
+
+                <img
+                    src="images/hoodie.jpg"
+                    alt="Street Hoodie"
+                    onerror="this.src='https://images.unsplash.com/photo-1556821840-3a63f95609a7?auto=format&fit=crop&w=900&q=85';"
+                >
+
+            </div>
+
+            <div class="product-info">
+
+                <div class="product-category">
+                    UNISEX
+                </div>
+
+                <div class="product-name">
+                    Street Hoodie
+                </div>
+
+                <div class="product-hint">
+                    Tap to add
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- PRODUCT 3 -->
+
+        <div class="product-card"
+             data-category="WOMEN"
+             data-name="Premium Top"
+             data-price="69"
+             data-image="images/top.jpg">
+
+            <div class="product-img-wrap">
+
+                <img
+                    src="images/top.jpg"
+                    alt="Premium Top"
+                    onerror="this.src='https://images.unsplash.com/photo-1551488831-00ddcb6c6bd3?auto=format&fit=crop&w=900&q=85';"
+                >
+
+            </div>
+
+            <div class="product-info">
+
+                <div class="product-category">
+                    WOMEN
+                </div>
+
+                <div class="product-name">
+                    Premium Top
+                </div>
+
+                <div class="product-hint">
+                    Tap to add
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- PRODUCT 4 -->
+
+        <div class="product-card"
+             data-category="MEN"
+             data-name="Graphic T-Shirt"
+             data-price="49"
+             data-image="images/tshirt.jpg">
+
+            <div class="product-img-wrap">
+
+                <img
+                    src="images/tshirt.jpg"
+                    alt="Graphic T-Shirt"
+                    onerror="this.src='https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=900&q=85';"
+                >
+
+            </div>
+
+            <div class="product-info">
+
+                <div class="product-category">
+                    MEN
+                </div>
+
+                <div class="product-name">
+                    Graphic T-Shirt
+                </div>
+
+                <div class="product-hint">
+                    Tap to add
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- PRODUCT 5
+             FIXED BROKEN IMAGE
+        -->
+
+        <div class="product-card"
+             data-category="ACCESSORIES"
+             data-name="Leather Bag"
+             data-price="99"
+             data-image="images/bag.jpg">
+
+            <div class="product-img-wrap">
+
+                <img
+                    src="images/bag.jpg"
+                    alt="Leather Bag"
+                    onerror="this.src='https://images.unsplash.com/photo-1584917865442-de89df76afd3?auto=format&fit=crop&w=900&q=85';"
+                >
+
+            </div>
+
+            <div class="product-info">
+
+                <div class="product-category">
+                    ACCESSORIES
+                </div>
+
+                <div class="product-name">
+                    Leather Bag
+                </div>
+
+                <div class="product-hint">
+                    Tap to add
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- PRODUCT 6 -->
+
+        <div class="product-card"
+             data-category="ACCESSORIES"
+             data-name="Classic Sunglasses"
+             data-price="59"
+             data-image="images/sunglasses.jpg">
+
+            <div class="product-img-wrap">
+
+                <img
+                    src="images/sunglasses.jpg"
+                    alt="Classic Sunglasses"
+                    onerror="this.src='https://images.unsplash.com/photo-1511499767150-a48a237f0083?auto=format&fit=crop&w=900&q=85';"
+                >
+
+            </div>
+
+            <div class="product-info">
+
+                <div class="product-category">
+                    ACCESSORIES
+                </div>
+
+                <div class="product-name">
+                    Classic Sunglasses
+                </div>
+
+                <div class="product-hint">
+                    Tap to add
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- PRODUCT 7
+             FIXED BROKEN IMAGE
+        -->
+
+        <div class="product-card"
+             data-category="MEN"
+             data-name="Oversized Jacket"
+             data-price="129"
+             data-image="images/jacket.jpg">
+
+            <div class="product-img-wrap">
+
+                <img
+                    src="images/jacket.jpg"
+                    alt="Oversized Jacket"
+                    onerror="this.src='https://images.unsplash.com/photo-1551488831-00ddcb6c6bd3?auto=format&fit=crop&w=900&q=85';"
+                >
+
+            </div>
+
+            <div class="product-info">
+
+                <div class="product-category">
+                    MEN
+                </div>
+
+                <div class="product-name">
+                    Oversized Jacket
+                </div>
+
+                <div class="product-hint">
+                    Tap to add
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- PRODUCT 8
+             FIXED BROKEN IMAGE
+        -->
+
+        <div class="product-card"
+             data-category="UNISEX"
+             data-name="Relaxed Unisex Shirt"
+             data-price="65"
+             data-image="images/unisex-shirt.jpg">
+
+            <div class="product-img-wrap">
+
+                <img
+                    src="images/unisex-shirt.jpg"
+                    alt="Relaxed Unisex Shirt"
+                    onerror="this.src='https://images.unsplash.com/photo-1529139574466-a303027c1d8b?auto=format&fit=crop&w=900&q=85';"
+                >
+
+            </div>
+
+            <div class="product-info">
+
+                <div class="product-category">
+                    UNISEX
+                </div>
+
+                <div class="product-name">
+                    Relaxed Unisex Shirt
+                </div>
+
+                <div class="product-hint">
+                    Tap to add
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     FOOTER
+========================= -->
+
+<footer id="footer">
+
+<div class="footer-inner">
+
+    <div class="footer-brand">
+
+        <div class="footer-logo">
+            OFFSTITCH
+        </div>
+
+        <p class="footer-text">
+            Modern fashion made for everyday movement.
+            Minimal. Bold. Effortless.
+        </p>
+
+    </div>
+
+    <div class="footer-col">
+
+        <h4>SHOP</h4>
+
+        <a href="#arrivals">New Arrivals</a>
+        <a href="#arrivals">Men</a>
+        <a href="#arrivals">Women</a>
+        <a href="#arrivals">Unisex</a>
+
+    </div>
+
+    <div class="footer-col">
+
+        <h4>EXPLORE</h4>
+
+        <a href="#categories">Categories</a>
+        <a href="#arrivals">Accessories</a>
+        <a href="#home">Home</a>
+
+    </div>
+
+    <div class="footer-col">
+
+        <h4>SUPPORT</h4>
+
+        <a href="#">Contact</a>
+        <a href="#">Shipping</a>
+        <a href="#">Returns</a>
+
+    </div>
+
+</div>
+
+<div class="copyright">
+    © 2026 OFFSTITCH. BEYOND THE STITCH.
+</div>
+
+</footer>
+
+
+<!-- =========================
+     CART OVERLAY
+========================= -->
+
+<div class="cart-overlay" id="cartOverlay"></div>
+
+
+<!-- =========================
+     CART DRAWER
+========================= -->
+
+<div class="cart-drawer" id="cartDrawer">
+
+    <div class="cart-header">
+
+        <h2>
+            YOUR BAG
+        </h2>
+
+        <button class="close-cart" id="closeCart">
+            ×
+        </button>
+
+    </div>
+
+    <div class="cart-items" id="cartItems">
+
+        <div class="empty-cart">
+            Your bag is empty.
+        </div>
+
+    </div>
+
+    <div class="cart-footer">
+
+        <button class="checkout-btn">
+            CHECKOUT
+        </button>
+
+    </div>
+
+</div>
+
+
+<script>
+
+/* =========================
+   MENU
+========================= */
+
+const menuBtn =
+    document.getElementById("menuBtn");
+
+const mobileMenu =
+    document.getElementById("mobileMenu");
+
+menuBtn.addEventListener("click", () => {
+
+    mobileMenu.classList.toggle("open");
+
+});
+
+document.querySelectorAll(".mobile-menu a")
+.forEach(link => {
+
+    link.addEventListener("click", () => {
+        mobileMenu.classList.remove("open");
+    });
+
+});
+
+
+/* =========================
+   CART
+========================= */
+
+const cartBtn =
+    document.getElementById("cartBtn");
+
+const cartDrawer =
+    document.getElementById("cartDrawer");
+
+const cartOverlay =
+    document.getElementById("cartOverlay");
+
+const closeCart =
+    document.getElementById("closeCart");
+
+const cartItems =
+    document.getElementById("cartItems");
+
+const cartCount =
+    document.getElementById("cartCount");
+
+let cart = [];
+
+
+/* OPEN CART */
+
+function openCart(){
+
+    cartDrawer.classList.add("open");
+    cartOverlay.classList.add("open");
+
+}
+
+
+/* CLOSE CART */
+
+function closeCartDrawer(){
+
+    cartDrawer.classList.remove("open");
+    cartOverlay.classList.remove("open");
+
+}
+
+
+cartBtn.addEventListener("click",openCart);
+
+closeCart.addEventListener(
+    "click",
+    closeCartDrawer
+);
+
+cartOverlay.addEventListener(
+    "click",
+    closeCartDrawer
+);
+
+
+/* =========================
+   ADD TO CART
+========================= */
+
+document.querySelectorAll(".product-card")
+.forEach(card => {
+
+    card.addEventListener("click", () => {
+
+        const product = {
+
+            name:card.dataset.name,
+
+            price:Number(card.dataset.price),
+
+            image:card.dataset.image
+
+        };
+
+        cart.push(product);
+
+        updateCart();
+
+        openCart();
+
+    });
+
+});
+
+
+/* =========================
+   UPDATE CART
+========================= */
+
+function updateCart(){
+
+    cartCount.textContent = cart.length;
+
+    if(cart.length === 0){
+
+        cartItems.innerHTML = `
+            <div class="empty-cart">
+                Your bag is empty.
+            </div>
+        `;
+
+        return;
+    }
+
+
+    cartItems.innerHTML = "";
+
+
+    cart.forEach((item,index) => {
+
+        const div =
+            document.createElement("div");
+
+        div.className = "cart-item";
+
+        div.innerHTML = `
+
+            <img
+                src="${item.image}"
+                alt="${item.name}"
+                onerror="this.src='https://images.unsplash.com/photo-1529139574466-a303027c1d8b?auto=format&fit=crop&w=400&q=80';"
+            >
+
+            <div class="cart-item-info">
+
+                <h4>
+                    ${item.name}
+                </h4>
+
+                <p>
+                    $${item.price}
+                </p>
+
+                <button
+                    class="remove-item"
+                    onclick="removeFromCart(${index})"
+                >
+                    REMOVE
+                </button>
+
+            </div>
+        `;
+
+        cartItems.appendChild(div);
+
+    });
+
+}
+
+
+/* =========================
+   REMOVE CART ITEM
+========================= */
+
+function removeFromCart(index){
+
+    cart.splice(index,1);
+
+    updateCart();
+
+}
+
+
+/* =========================
+   FILTER
+========================= */
+
+const filterButtons =
+    document.querySelectorAll(".filter-btn");
+
+const products =
+    document.querySelectorAll(".product-card");
+
+
+filterButtons.forEach(button => {
+
+    button.addEventListener("click", () => {
+
+        filterButtons.forEach(btn =>
+            btn.classList.remove("active")
+        );
+
+        button.classList.add("active");
+
+        const filter =
+            button.dataset.filter;
+
+
+        products.forEach(product => {
+
+            if(
+                filter === "ALL" ||
+                product.dataset.category === filter
+            ){
+
+                product.style.display = "block";
+
+                setTimeout(() => {
+                    product.classList.add("visible");
+                },50);
+
+            }else{
+
+                product.style.display = "none";
+                product.classList.remove("visible");
+
+            }
+
+        });
+
+    });
+
+});
+
+
+/* =========================
+   CATEGORY → PRODUCT FILTER
+========================= */
+
+function scrollToArrivals(category){
+
+    document
+        .querySelectorAll(".filter-btn")
+        .forEach(btn => {
+
+            btn.classList.remove("active");
+
+            if(btn.dataset.filter === category){
+
+                btn.classList.add("active");
+
+            }
+
+        });
+
+
+    products.forEach(product => {
+
+        if(product.dataset.category === category){
+
+            product.style.display = "block";
+
+            setTimeout(() => {
+                product.classList.add("visible");
+            },50);
+
+        }else{
+
+            product.style.display = "none";
+
+        }
+
+    });
+
+
+    document
+        .getElementById("arrivals")
+        .scrollIntoView({
+            behavior:"smooth"
+        });
+
+}
+
+
+/* =========================
+   SCROLL ANIMATION
+========================= */
+
+const observer =
+    new IntersectionObserver(
+        entries => {
+
+            entries.forEach(entry => {
+
+                if(entry.isIntersecting){
+
+                    entry.target.classList.add("show");
+
+                }
+
+            });
+
+        },
+        {
+            threshold:.12
+        }
+    );
+
+
+document
+    .querySelectorAll(".reveal")
+    .forEach(el => {
+
+        observer.observe(el);
+
+    });
+
+
+/* =========================
+   PRODUCT IMAGE REVEAL
+========================= */
+
+const productObserver =
+    new IntersectionObserver(
+        entries => {
+
+            entries.forEach(entry => {
+
+                if(entry.isIntersecting){
+
+                    entry.target.classList.add("visible");
+
+                }
+
+            });
+
+        },
+        {
+            threshold:.08
+        }
+    );
+
+
+products.forEach(product => {
+
+    productObserver.observe(product);
+
+});
+
+
+/* =========================
+   IMAGE ERROR HANDLING
+========================= */
+
+document
+    .querySelectorAll("img")
+    .forEach(img => {
+
+        img.addEventListener(
+            "error",
+            function(){
+
+                this.style.objectFit = "cover";
+
+            }
+        );
+
+    });
+
+
+/* =========================
+   CLOSE CART WITH ESC
+========================= */
+
+document.addEventListener(
+    "keydown",
+    event => {
+
+        if(event.key === "Escape"){
+
+            closeCartDrawer();
+
+            mobileMenu.classList.remove("open");
+
+        }
+
+    }
+);
+
+</script>
+
+</body>
+</html>
